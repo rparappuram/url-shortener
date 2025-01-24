@@ -1,9 +1,15 @@
-import { Button } from "@/components/ui/button"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "@/pages/Home"
 
-export default function Home() {
+export default function App() {
   return (
-    <div>
-      <Button>Click me</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/signup" element={<Signup />} /> */}
+        {/* <Route path="/signin" element={<Signin />} /> */}
+        {/* Add more routes as needed */}
+      </Routes>
+    </BrowserRouter>
   )
 }
