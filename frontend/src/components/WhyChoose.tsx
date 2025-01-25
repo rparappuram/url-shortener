@@ -3,7 +3,7 @@ import { Link } from "lucide-react";
 
 export function WhyChoose() {
   return (
-    <section className="bg-gray-50 py-16">
+    <section className="bg-gray-50 h-full py-16 flex flex-col justify-center">
       <div className="container mx-auto px-4">
         <h3 className="text-2xl font-bold mb-8 text-center">
           Why Choose {import.meta.env.VITE_APP_NAME}?

@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="h-screen w-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow grid grid-rows-2">
         <HeroSection />
         <WhyChoose />
       </main>

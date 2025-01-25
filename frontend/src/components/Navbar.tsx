@@ -9,8 +9,10 @@ export function Navbar() {
           <Link className="w-6 h-6 mr-2" />
           {import.meta.env.VITE_APP_NAME}
         </h1>
-        <nav>
-          <Button variant="secondary">Login</Button>
+        <nav className="flex items-center">
+          <Button variant="secondary" className="mr-4">
+            Login
+          </Button>
           <Button>Sign Up</Button>
         </nav>
       </div>
