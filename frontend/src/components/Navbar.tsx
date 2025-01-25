@@ -37,13 +37,6 @@ export function Navbar() {
                   </NavigationMenuLink>
                 </a>
               </NavigationMenuItem>
-              {/* <NavigationMenuItem>
-                <a href="/dashboard" className="text-black">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Analytics
-                  </NavigationMenuLink>
-                </a>
-              </NavigationMenuItem> */}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -56,7 +49,7 @@ export function Navbar() {
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Button variant="secondary" className="relative h-8 w-8 rounded-full">
                 <User className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
