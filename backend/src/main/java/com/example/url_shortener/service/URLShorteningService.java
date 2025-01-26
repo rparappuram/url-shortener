@@ -27,4 +27,20 @@ public class URLShorteningService {
         ShortenedURL shortenedURL = repository.findByShortURL(shortURL);
         return (shortenedURL != null) ? shortenedURL.getLongURL() : null;
     }
+
+    public Iterable<ShortenedURL> getURLs() {
+        return repository.findAll();
+    }
+
+    public void deleteURL(String shortURL) {
+        repository.deleteByShortURL(shortURL);
+    }
+
+    public void updateURL(String shortURL, String longURL) {
+        ShortenedURL shortenedURL = repository.findByShortURL(shortURL);
+        if (shortenedURL != null) {
+            shortenedURL.setLongURL(longURL);
+            repository.save(shortenedURL);
+        }
+    }
 }
