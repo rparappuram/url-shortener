@@ -11,11 +11,13 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { RegisterLogo } from "@/components/RegisterLogo";
-import { Mail, Lock } from "lucide-react";
+import { Mail } from "lucide-react";
+import { PasswordInput } from "@/components/PasswordInput";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,18 +64,32 @@ export default function SignUp() {
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
-                  className="pl-8"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full">
+            <div className="space-y-2">
+              <Label htmlFor="password">Confirm Password</Label>
+              <div className="relative">
+                <PasswordInput
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={() => {
+                alert("TODO: Handle sign up logic");
+              }}
+            >
               Sign Up
             </Button>
           </form>

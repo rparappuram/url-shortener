@@ -11,6 +11,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { RegisterLogo } from "@/components/RegisterLogo";
+import { PasswordInput } from "@/components/PasswordInput";
 import { Mail, Lock } from "lucide-react";
 
 export default function Login() {
@@ -25,7 +26,7 @@ export default function Login() {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-gray-100 flex-col">
-    <RegisterLogo />
+      <RegisterLogo />
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold flex items-center justify-center">
@@ -59,10 +60,8 @@ export default function Login() {
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Lock className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
-                  className="pl-8"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

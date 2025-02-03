@@ -11,14 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @RestController
 @RequestMapping("/api")
 public class URLController {
 
     @Autowired
     private URLShorteningService urlService;
-
 
     // Shorten a URL
     @PostMapping("/shorten")
@@ -32,8 +30,8 @@ public class URLController {
         String longURL = urlService.getLongURL(shortURL);
         if (longURL != null) {
             return ResponseEntity.status(HttpStatus.FOUND) // HTTP 302 redirect
-                                .location(URI.create(longURL))
-                                .build();
+                    .location(URI.create(longURL))
+                    .build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -44,7 +42,7 @@ public class URLController {
     public Iterable<ShortenedURL> getURLs() {
         return urlService.getURLs();
     }
-    
+
     // Update a URL
     @PutMapping("/{shortURL}")
     public ResponseEntity<Void> updateURL(@PathVariable String shortURL, @RequestBody String longURL) {
