@@ -2,27 +2,30 @@ package com.example.url_shortener.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 public class ShortenedURL {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "long_url", nullable = false)
+    @Column(nullable = false)
     private String longURL;
 
-    @Column(name = "short_url", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String shortURL;
 
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     public ShortenedURL() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

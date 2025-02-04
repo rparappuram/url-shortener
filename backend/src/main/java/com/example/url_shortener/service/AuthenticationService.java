@@ -22,14 +22,15 @@ public class AuthenticationService {
 
     public String signupUser(User user) {
         userDetailsService.signupUser(user);
-        return jwtService.generateToken(user.getEmail());
+        return jwtService.generateToken(user);
     }
 
     public String loginUser(User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getEmail());
+            user = (User) userDetailsService.loadUserByUsername(user.getEmail()); // to get user.id from db
+            return jwtService.generateToken(user);
         } else {
             throw new RuntimeException("Invalid username or password");
         }

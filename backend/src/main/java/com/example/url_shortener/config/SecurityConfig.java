@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.url_shortener.filter.JwtAuthenticationFilter;
 import com.example.url_shortener.service.UserDetailsServiceImp;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -27,6 +30,9 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private CustomLogoutHandler customLogoutHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -39,13 +45,27 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll() // Allow all requests to /api/auth/**
+                        .requestMatchers("/api/{shortURL}").permitAll() // Allow all requests to /api/{shortURL}
                         .anyRequest().authenticated() // Protect all other endpoints
                 ).userDetailsService(userDetailsService()) // Custom user details service
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
                 )
                 .authenticationProvider(authenticationProvider()) // Custom authentication provider
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
+                .exceptionHandling(
+                        e -> e.accessDeniedHandler((request, response, accessDeniedException) -> response
+                                .sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage()))
+                                .authenticationEntryPoint((request, response, authException) -> response
+                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())))
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout") // Custom logout URL
+                        .addLogoutHandler(customLogoutHandler) // Custom logout handler
+                        .logoutSuccessHandler(
+                                (request, response, authentication) -> SecurityContextHolder.clearContext() // Clear
+                                                                                                            // security
+                                                                                                            // context
+                        ));
 
         return http.build();
     }

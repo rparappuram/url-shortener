@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpHeaders;
@@ -23,11 +22,6 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authService;
-
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome, this endpoint is not secure";
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signupUser(@RequestBody User user) {
