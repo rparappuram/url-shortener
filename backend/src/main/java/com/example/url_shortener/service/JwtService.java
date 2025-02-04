@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,10 @@ import io.jsonwebtoken.io.Decoders;
 @Component
 public class JwtService {
 
-    // TODO: Change to use environment variable
-    public static final String SECRET = "KHbh89hebqSc65cRKFGDEc9hOn1GJn0SZauhze4DLaw="; // random Base64 string
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+
+    private final long EXPIRATION_PERIOD = 1000 * 60 * 60 * 24; // 24 hours
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -38,18 +41,19 @@ public class JwtService {
         return jwt;
     }
 
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setClaims(claims)
+                .setClaims(claims) 
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24 hours
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_PERIOD))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -67,9 +71,10 @@ public class JwtService {
     }
 
     public boolean isValidToken(String token, UserDetails userDetails) {
-        final String extractedEmail = extractEmail(token);
+        final boolean emailMatches = extractEmail(token).equals(userDetails.getUsername());
+        final boolean isTokenExpired = isTokenExpired(token);
         final boolean isRevoked = tokenRepository.findByToken(token).isRevoked();
-        return (extractedEmail.equals(userDetails.getUsername()) && !isTokenExpired(token) && !isRevoked);
+        return (emailMatches && !isTokenExpired && !isRevoked);
     }
 
     private boolean isTokenExpired(String token) {

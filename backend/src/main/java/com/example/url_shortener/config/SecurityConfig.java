@@ -41,7 +41,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll() // Allow all requests to /api/auth/**
@@ -57,7 +57,7 @@ public class SecurityConfig {
                         e -> e.accessDeniedHandler((request, response, accessDeniedException) -> response
                                 .sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage()))
                                 .authenticationEntryPoint((request, response, authException) -> response
-                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())))
+                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()))) // TODO: For some reason, this runs on internal server error
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout") // Custom logout URL
                         .addLogoutHandler(customLogoutHandler) // Custom logout handler
@@ -65,9 +65,8 @@ public class SecurityConfig {
                                 (request, response, authentication) -> SecurityContextHolder.clearContext() // Clear
                                                                                                             // security
                                                                                                             // context
-                        ));
-
-        return http.build();
+                        ))
+                .build();
     }
 
     @Bean
