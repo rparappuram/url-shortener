@@ -14,39 +14,39 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-
-import { Link, User, LogOut } from "lucide-react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link as LinkIcon, User, LogOut } from "lucide-react";
 
 export function Navbar() {
   return (
     <header className="border-b bg-white">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <a href="/">
+          <Link to="/"> 
             <h1 className="text-2xl font-bold flex items-center cursor-pointer">
-              <Link className="w-6 h-6 mr-2" />
+              <LinkIcon className="w-6 h-6 mr-2" />
               {import.meta.env.VITE_APP_NAME}
             </h1>
-          </a>
+          </Link>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <a href="/dashboard" className="text-black">
+                <Link to="/dashboard" className="text-black">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Links
                   </NavigationMenuLink>
-                </a>
+                </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
         <nav className="flex items-center space-x-4">
-          <a href="/login">
+          <Link to="/login">
             <Button variant="secondary">Login</Button>
-          </a>
-          <a href="/signup">
+          </Link>
+          <Link to="/signup">
             <Button>Sign Up</Button>
-          </a>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

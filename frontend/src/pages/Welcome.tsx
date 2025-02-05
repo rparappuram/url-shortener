@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "lucide-react";
 
-export default function Home() {
+export default function Welcome() {
   return (
     <div className="h-screen w-screen flex flex-col">
       <Navbar />

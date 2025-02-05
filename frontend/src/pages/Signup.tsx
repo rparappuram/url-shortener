@@ -13,6 +13,7 @@ import {
 import { RegisterLogo } from "@/components/RegisterLogo";
 import { Mail } from "lucide-react";
 import { PasswordInput } from "@/components/PasswordInput";
+import { Link } from "react-router-dom";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -35,9 +36,9 @@ export default function SignUp() {
           </CardTitle>
           <CardDescription className="text-center">
             Already have an account?{" "}
-            <a href="/login" className="text-blue-600 hover:underline">
+            <Link to="/login" className="text-blue-600 hover:underline">
               Log in
-            </a>
+            </Link>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -97,13 +98,13 @@ export default function SignUp() {
         <CardFooter className="flex justify-center">
           <p className="text-xs text-gray-600">
             By creating an account, you agree to our{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="#" className="text-blue-600 hover:underline">
               Terms of Service
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="#" className="text-blue-600 hover:underline">
               Privacy Policy
-            </a>
+            </Link>
             .
           </p>
         </CardFooter>

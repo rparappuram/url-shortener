@@ -13,6 +13,7 @@ import {
 import { RegisterLogo } from "@/components/RegisterLogo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { Mail, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -34,9 +35,9 @@ export default function Login() {
           </CardTitle>
           <CardDescription className="text-center">
             Don't have an account?{" "}
-            <a href="/signup" className="text-blue-600 hover:underline">
+            <Link to="/signup" className="text-blue-600 hover:underline">
               Sign up
-            </a>
+            </Link>
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -70,9 +71,9 @@ export default function Login() {
               {/* move Forgot your password to the right */}
               <div className="relative text-right">
                 <p className="text-sm text-gray-600">
-                  <a href="#" className="text-blue-600 hover:underline">
+                  <Link to="#" className="text-blue-600 hover:underline">
                     Forgot your password?
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -84,13 +85,13 @@ export default function Login() {
         <CardFooter className="flex justify-center">
           <p className="text-xs text-gray-600">
             By logging in with an account, you agree to our{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="#" className="text-blue-600 hover:underline">
               Terms of Service
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="#" className="text-blue-600 hover:underline">
               Privacy Policy
-            </a>
+            </Link>
             .
           </p>
         </CardFooter>
