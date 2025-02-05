@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api", // replace with your AWS backend URL after deployment
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 export const shortenURL = async (longURL: string) => {

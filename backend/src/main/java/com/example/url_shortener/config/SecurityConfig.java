@@ -57,7 +57,16 @@ public class SecurityConfig {
                         e -> e.accessDeniedHandler((request, response, accessDeniedException) -> response
                                 .sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage()))
                                 .authenticationEntryPoint((request, response, authException) -> response
-                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()))) // TODO: For some reason, this runs on internal server error
+                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()))) // TODO:
+                                                                                                                      // For
+                                                                                                                      // some
+                                                                                                                      // reason,
+                                                                                                                      // this
+                                                                                                                      // runs
+                                                                                                                      // on
+                                                                                                                      // internal
+                                                                                                                      // server
+                                                                                                                      // error
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout") // Custom logout URL
                         .addLogoutHandler(customLogoutHandler) // Custom logout handler

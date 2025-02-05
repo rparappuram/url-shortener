@@ -22,6 +22,13 @@ public class ShortenedURL {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column
+    private Long clickCount = 0L;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public ShortenedURL() {
         this.createdAt = LocalDateTime.now();
     }
@@ -58,18 +65,19 @@ public class ShortenedURL {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ShortenedURL{");
-        for (java.lang.reflect.Field field : this.getClass().getDeclaredFields()) {
-            try {
-                sb.append(field.getName()).append("='").append(field.get(this)).append("', ");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        sb.append("}");
-        return sb.toString();
+    public Long getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(Long clickCount) {
+        this.clickCount = clickCount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

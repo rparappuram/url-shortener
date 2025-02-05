@@ -25,6 +25,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
+    @OneToMany(mappedBy = "user")
+    private List<ShortenedURL> shortenedURLs;
+
     @Override
     public String getUsername() {
         return email;
@@ -57,19 +60,5 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("User{");
-        for (java.lang.reflect.Field field : this.getClass().getDeclaredFields()) {
-            try {
-                sb.append(field.getName()).append("='").append(field.get(this)).append("', ");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 }
