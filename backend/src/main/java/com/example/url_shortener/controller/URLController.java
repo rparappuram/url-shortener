@@ -18,11 +18,18 @@ public class URLController {
     @Autowired
     private URLShorteningService urlService;
 
-    @PostMapping("/shorten")
+    @PostMapping("/url")
     public ResponseEntity<Object> shortenURL(@RequestBody Map<String, String> request) {
         String longURL = request.get("longURL");
         String shortURL = urlService.shortenURL(longURL);
         return ResponseEntity.ok(Map.of("shortURL", shortURL));
+    }
+
+    @DeleteMapping("/url")
+    public ResponseEntity<Void> deleteURL(@RequestBody Map<String, String> request) {
+        String shortURL = request.get("shortURL");
+        urlService.deleteURL(shortURL);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{shortURL}")

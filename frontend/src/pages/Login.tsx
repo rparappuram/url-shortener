@@ -14,15 +14,31 @@ import { RegisterLogo } from "@/components/RegisterLogo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { login as loginAPI } from "@/services/authService";
+import { shortenURL } from "@/services/urlService";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const { loginInfo, pendingURL, setPendingURL } = useAuth();
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle the login logic
-    console.log("Login attempt with:", { email, password });
+    try {
+      const response = await loginAPI(username, password);
+      loginInfo(response.username, response.token);
+      if (pendingURL) {
+        await shortenURL(pendingURL);
+        setPendingURL(null);
+      }
+      navigate("/dashboard");
+    } catch (error) {
+      alert("Login error:" + error);
+    }
   };
 
   return (
@@ -43,16 +59,16 @@ export default function Login() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <div className="relative">
                 <Mail className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                 <Input
-                  id="email"
-                  type="email"
+                  id="username"
+                  type="username"
                   placeholder="john@example.com"
                   className="pl-8"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>

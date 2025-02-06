@@ -21,8 +21,8 @@ public class URLShorteningService {
     private UserRepository userRepository;
 
     private User getUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username);
     }
 
     public String shortenURL(String longURL) {
@@ -45,5 +45,12 @@ public class URLShorteningService {
     public List<ShortenedURL> getAllURLsForUser() {
         User user = getUser();
         return URLrepository.findByUser(user);
+    }
+
+    public void deleteURL(String shortURL) {
+        ShortenedURL shortenedURL = URLrepository.findByShortURL(shortURL);
+        if (shortenedURL != null) {
+            URLrepository.delete(shortenedURL);
+        }
     }
 }

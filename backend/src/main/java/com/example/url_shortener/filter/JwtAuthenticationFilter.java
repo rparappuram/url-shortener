@@ -1,6 +1,8 @@
 package com.example.url_shortener.filter;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -33,24 +35,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+
+        String requestURI = request.getRequestURI();
+
+        // Define regex for allowed endpoints
+        String bypassPattern = "^/api/auth/.*|^/api/[a-zA-Z0-9]{8}$";
+
+        Pattern pattern = Pattern.compile(bypassPattern);
+        Matcher matcher = pattern.matcher(requestURI);
+
+        // If the request matches the allowed pattern, skip authentication
+        if (matcher.matches()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring("Bearer ".length());
-        String email = jwtService.extractEmail(token);
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
+            return;
+        }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        String token = authHeader.substring("Bearer ".length());
+        String username = jwtService.extractUsername(token);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.isValidToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                throw new RuntimeException("Invalid JWT token");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
             }
 
         }

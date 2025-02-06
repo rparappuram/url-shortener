@@ -21,12 +21,12 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public AuthenticationResponse signupUser(@RequestBody User user) {
         String token = authService.signupUser(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getUsername());
     }
 
     @PostMapping("/login")
     public AuthenticationResponse loginUser(@RequestBody User user) {
         String token = authService.loginUser(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, user.getUsername());
     }
 }

@@ -27,9 +27,9 @@ public class AuthenticationService {
 
     public String loginUser(User user) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if (authentication.isAuthenticated()) {
-            user = (User) userDetailsService.loadUserByUsername(user.getEmail()); // to get user.id from db
+            user = (User) userDetailsService.loadUserByUsername(user.getUsername()); // to get user.id from db
             return jwtService.generateToken(user);
         } else {
             throw new RuntimeException("Invalid username or password");

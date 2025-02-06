@@ -19,18 +19,18 @@ public class UserDetailsServiceImp implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     public User signupUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("User already exists");
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("Username already taken");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) {
-        User userDetail = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) {
+        User userDetail = userRepository.findByUsername(username);
         if (userDetail == null) {
-            throw new UsernameNotFoundException("User not found: " + email);
+            throw new UsernameNotFoundException("User not found: " + username);
         }
         return userDetail;
     }

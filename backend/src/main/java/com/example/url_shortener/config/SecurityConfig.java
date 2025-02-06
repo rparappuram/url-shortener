@@ -1,5 +1,7 @@
 package com.example.url_shortener.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.example.url_shortener.filter.JwtAuthenticationFilter;
 import com.example.url_shortener.service.UserDetailsServiceImp;
@@ -42,7 +45,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("*"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowedMethods(List.of("*"));
+                    config.setExposedHeaders(List.of("Authorization"));
+                    return config;
+                }))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll() // Allow all requests to /api/auth/**
                         .requestMatchers("/api/{shortURL}").permitAll() // Allow all requests to /api/{shortURL}
@@ -57,16 +68,7 @@ public class SecurityConfig {
                         e -> e.accessDeniedHandler((request, response, accessDeniedException) -> response
                                 .sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage()))
                                 .authenticationEntryPoint((request, response, authException) -> response
-                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()))) // TODO:
-                                                                                                                      // For
-                                                                                                                      // some
-                                                                                                                      // reason,
-                                                                                                                      // this
-                                                                                                                      // runs
-                                                                                                                      // on
-                                                                                                                      // internal
-                                                                                                                      // server
-                                                                                                                      // error
+                                        .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())))
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout") // Custom logout URL
                         .addLogoutHandler(customLogoutHandler) // Custom logout handler

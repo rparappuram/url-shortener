@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,49 +19,47 @@ import {
 } from "@/components/ui/card";
 import { Pencil, Trash2 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import {
+  shortenURL,
+  getAllURLsForUser,
+  deleteURL,
+} from "@/services/urlService";
 
 interface ShortenedLink {
-  id: string;
-  originalUrl: string;
-  shortUrl: string;
-  clicks: number;
+  id: number;
+  longURL: string;
+  shortURL: string;
   createdAt: string;
+  clickCount: number;
 }
 
 export default function Dashboard() {
   const [newUrl, setNewUrl] = useState("");
-  const [links, setLinks] = useState<ShortenedLink[]>([
-    {
-      id: "1",
-      originalUrl: "https://example.com",
-      shortUrl: "https://short.ly/abc123",
-      clicks: 42,
-      createdAt: "2023-05-01",
-    },
-    {
-      id: "2",
-      originalUrl: "https://anotherexample.com",
-      shortUrl: "https://short.ly/def456",
-      clicks: 17,
-      createdAt: "2023-05-02",
-    },
-  ]);
+  const [links, setLinks] = useState<ShortenedLink[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const fetchLinks = async () => {
+    const response = await getAllURLsForUser();
+    setLinks(response);
+  };
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle the link shortening logic
-    console.log("Shortening URL:", newUrl);
+    await shortenURL(newUrl);
     setNewUrl("");
+    window.location.reload();
   };
 
-  const handleEdit = (id: string) => {
-    // Implement edit functionality
-    console.log("Editing link with id:", id);
+  const handleEdit = (id: number) => {
+    alert("TODO: Implement edit functionality for " + id);
   };
 
-  const handleDelete = (id: string) => {
-    // Implement delete functionality
-    console.log("Deleting link with id:", id);
+  const handleDelete = (shortURL: string) => {
+    deleteURL(shortURL);
+    window.location.reload();
   };
 
   return (
@@ -84,7 +82,7 @@ export default function Dashboard() {
                 </Label>
                 <Input
                   id="newUrl"
-                  type="url"
+                  type="text"
                   placeholder="Enter your long URL here"
                   value={newUrl}
                   onChange={(e) => setNewUrl(e.target.value)}
@@ -115,34 +113,45 @@ export default function Dashboard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {links.map((link) => (
-                  <TableRow key={link.id}>
-                    <TableCell className="font-medium">
-                      {link.originalUrl}
-                    </TableCell>
-                    <TableCell>{link.shortUrl}</TableCell>
-                    <TableCell>{link.clicks}</TableCell>
-                    <TableCell>{link.createdAt}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => handleEdit(link.id)}
+                {links &&
+                  links.map((link) => (
+                    <TableRow key={link.id}>
+                      <TableCell className="font-medium">
+                        {link.longURL}
+                      </TableCell>
+                      {/* change hover color */}
+                      <TableCell>
+                        <a
+                          href={`${import.meta.env.VITE_API_URL}/${link.shortURL}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
                         >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => handleDelete(link.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                          {`${import.meta.env.VITE_API_URL}/${link.shortURL}`}
+                        </a>
+                      </TableCell>
+                      <TableCell>{link.clickCount}</TableCell>
+                      <TableCell>{link.createdAt}</TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleEdit(link.id)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleDelete(link.shortURL)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </CardContent>

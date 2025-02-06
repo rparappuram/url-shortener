@@ -35,7 +35,7 @@ public class JwtService {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        String jwt = createToken(claims, user.getEmail());
+        String jwt = createToken(claims, user.getUsername());
         revokeAllTokensByUser(user);
         saveUserToken(jwt, user);
         return jwt;
@@ -65,15 +65,15 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String extractEmail(String token) {
+    public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public boolean isValidToken(String token, UserDetails userDetails) {
-        final boolean emailMatches = extractEmail(token).equals(userDetails.getUsername());
+        final boolean usernameMatches = extractUsername(token).equals(userDetails.getUsername());
         final boolean isTokenExpired = isTokenExpired(token);
         final boolean isRevoked = tokenRepository.findByToken(token).isRevoked();
-        return (emailMatches && !isTokenExpired && !isRevoked);
+        return (usernameMatches && !isTokenExpired && !isRevoked);
     }
 
     private boolean isTokenExpired(String token) {
