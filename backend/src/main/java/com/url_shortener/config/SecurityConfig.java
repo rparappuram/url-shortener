@@ -1,4 +1,4 @@
-package com.example.url_shortener.config;
+package com.url_shortener.config;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.example.url_shortener.filter.JwtAuthenticationFilter;
-import com.example.url_shortener.service.UserDetailsServiceImp;
+import com.url_shortener.filter.JwtAuthenticationFilter;
+import com.url_shortener.service.UserDetailsServiceImp;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -55,8 +55,8 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll() // Allow all requests to /api/auth/**
-                        .requestMatchers("/api/{shortURL}").permitAll() // Allow all requests to /api/{shortURL}
+                        .requestMatchers("/auth/**").permitAll() // Allow all requests to /api/auth/**
+                        .requestMatchers("/{shortURL}").permitAll() // Allow all requests to /api/{shortURL}
                         .anyRequest().authenticated() // Protect all other endpoints
                 ).userDetailsService(userDetailsService()) // Custom user details service
                 .sessionManagement(sess -> sess
@@ -70,7 +70,7 @@ public class SecurityConfig {
                                 .authenticationEntryPoint((request, response, authException) -> response
                                         .sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())))
                 .logout(logout -> logout
-                        .logoutUrl("/api/auth/logout") // Custom logout URL
+                        .logoutUrl("/auth/logout") // Custom logout URL
                         .addLogoutHandler(customLogoutHandler) // Custom logout handler
                         .logoutSuccessHandler(
                                 (request, response, authentication) -> SecurityContextHolder.clearContext() // Clear

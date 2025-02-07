@@ -1,4 +1,4 @@
-package com.example.url_shortener.service;
+package com.url_shortener.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.example.url_shortener.model.Token;
-import com.example.url_shortener.model.User;
-import com.example.url_shortener.repository.TokenRepository;
+import com.url_shortener.model.Token;
+import com.url_shortener.model.User;
+import com.url_shortener.repository.TokenRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

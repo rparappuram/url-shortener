@@ -1,4 +1,4 @@
-package com.example.url_shortener.filter;
+package com.url_shortener.filter;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.url_shortener.service.JwtService;
-import com.example.url_shortener.service.UserDetailsServiceImp;
+import com.url_shortener.service.JwtService;
+import com.url_shortener.service.UserDetailsServiceImp;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Define regex for allowed endpoints
-        String bypassPattern = "^/api/auth/.*|^/api/[a-zA-Z0-9]{8}$";
+        String bypassPattern = "^/auth/.*|^/api/[a-zA-Z0-9]{8}$";
 
         Pattern pattern = Pattern.compile(bypassPattern);
         Matcher matcher = pattern.matcher(requestURI);

@@ -1,11 +1,11 @@
-package com.example.url_shortener.repository;
+package com.url_shortener.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.example.url_shortener.model.Token;
+import com.url_shortener.model.Token;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
     Token findByToken(String token);

@@ -1,7 +1,4 @@
-package com.example.url_shortener.controller;
-
-import com.example.url_shortener.model.ShortenedURL;
-import com.example.url_shortener.service.URLShorteningService;
+package com.url_shortener.controller;
 
 import java.net.URI;
 import java.util.Map;
@@ -11,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.url_shortener.model.ShortenedURL;
+import com.url_shortener.service.URLShorteningService;
+
 @RestController
-@RequestMapping("/api")
 public class URLController {
 
     @Autowired

@@ -1,18 +1,18 @@
-package com.example.url_shortener.controller;
+package com.url_shortener.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.url_shortener.model.AuthenticationResponse;
-import com.example.url_shortener.model.User;
-import com.example.url_shortener.service.AuthenticationService;
+import com.url_shortener.model.AuthenticationResponse;
+import com.url_shortener.model.User;
+import com.url_shortener.service.AuthenticationService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     @Autowired

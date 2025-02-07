@@ -1,10 +1,11 @@
-package com.example.url_shortener.service;
+package com.url_shortener.service;
 
 import org.springframework.stereotype.Service;
-import com.example.url_shortener.model.ShortenedURL;
-import com.example.url_shortener.model.User;
-import com.example.url_shortener.repository.ShortenedURLRepository;
-import com.example.url_shortener.repository.UserRepository;
+
+import com.url_shortener.model.ShortenedURL;
+import com.url_shortener.model.User;
+import com.url_shortener.repository.ShortenedURLRepository;
+import com.url_shortener.repository.UserRepository;
 
 import java.util.List;
 import java.util.UUID;

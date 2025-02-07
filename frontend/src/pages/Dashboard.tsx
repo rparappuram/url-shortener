@@ -50,16 +50,16 @@ export default function Dashboard() {
     e.preventDefault();
     await shortenURL(newUrl);
     setNewUrl("");
-    window.location.reload();
+    fetchLinks();
   };
 
   const handleEdit = (id: number) => {
     alert("TODO: Implement edit functionality for " + id);
   };
 
-  const handleDelete = (shortURL: string) => {
-    deleteURL(shortURL);
-    window.location.reload();
+  const handleDelete = async (shortURL: string) => {
+    await deleteURL(shortURL);
+    fetchLinks();
   };
 
   return (

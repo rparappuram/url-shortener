@@ -1,4 +1,4 @@
-package com.example.url_shortener.service;
+package com.url_shortener.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.example.url_shortener.model.User;
+import com.url_shortener.model.User;
 
 @Service
 public class AuthenticationService {

@@ -1,4 +1,4 @@
-package com.example.url_shortener.model;
+package com.url_shortener.model;
 
 import java.time.LocalDateTime;
 

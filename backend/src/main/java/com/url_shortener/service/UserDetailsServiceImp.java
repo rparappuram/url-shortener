@@ -1,4 +1,4 @@
-package com.example.url_shortener.service;
+package com.url_shortener.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.url_shortener.model.User;
-import com.example.url_shortener.repository.UserRepository;
+import com.url_shortener.model.User;
+import com.url_shortener.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {

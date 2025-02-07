@@ -1,12 +1,12 @@
-package com.example.url_shortener.config;
+package com.url_shortener.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import com.example.url_shortener.model.Token;
-import com.example.url_shortener.repository.TokenRepository;
+import com.url_shortener.model.Token;
+import com.url_shortener.repository.TokenRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
