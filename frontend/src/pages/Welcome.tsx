@@ -1,9 +1,34 @@
+import { useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
 import { Link } from "lucide-react";
+import { useState } from "react";
+import { shortenURL } from "@/services/urlService";
 
-export default function Home() {
+export default function Welcome() {
+  const { isAuthenticated, setPendingURL } = useAuth();
+  const [longURL, setLongURL] = useState("");
+  const navigate = useNavigate();
+
+  const handleShorten = async () => {
+    if (!longURL.trim()) return;
+
+    console.log("Shortening URL:", longURL);
+
+    if (isAuthenticated) {
+      // Handle authenticated user
+      shortenURL(longURL);
+      navigate("/dashboard");
+      return;
+    } else {
+      // Handle new user
+      setPendingURL(longURL);
+      navigate("/signup");
+    }
+  };
+
   return (
     <div className="h-screen w-screen flex flex-col">
       <Navbar />
@@ -13,16 +38,24 @@ export default function Home() {
           <p className="text-xl mb-8">
             Create short, memorable links in seconds
           </p>
-          <div className="flex max-w-2xl mx-auto w-full">
+          <form
+            className="flex max-w-2xl mx-auto w-full"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleShorten();
+            }}
+          >
             <Input
-              type="url"
+              type="text"
               placeholder="Paste your long URL here"
               className="flex-grow"
+              value={longURL}
+              onChange={(e) => setLongURL(e.target.value)}
             />
             <Button type="submit" className="ml-2">
               Shorten
             </Button>
-          </div>
+          </form>
         </section>
         <section className="bg-gray-50 h-full py-16 flex flex-col justify-center">
           <div className="container mx-auto px-4">

@@ -8,11 +8,13 @@
 		<version>3.4.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>url-shortener</artifactId>
+	<groupId>com.snipplylink</groupId>
+	<artifactId>snipplylink</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>url-shortener</name>
-	<description>Demo project for Spring Boot</description>
+	<name>snipplylink</name>
+	<description>
+		SnipplyLink is a URL shortener that allows users to create, manage, and share shortened URLs. It provides a simple and intuitive interface for users to shorten long URLs, track click statistics, and manage their shortened links.
+	</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -42,7 +44,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -62,6 +63,21 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
 		</dependency>
 	</dependencies>
 
