@@ -25,6 +25,12 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
         run: mvn -f ./backend/pom.xml clean package -Dmaven.test.skip=true
 
+      - name: Install AWS Elastic Beanstalk CLI
+        run: |
+          pip install awsebcli --upgrade --user
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          eb --version  # Verify EB CLI installation
+
       - name: Configure AWS CLI
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
