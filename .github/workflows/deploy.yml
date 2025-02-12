@@ -48,5 +48,5 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
         run: |
           cd backend
-          eb init -r $AWS_REGION
+          eb init "URL Shortener" --region $AWS_REGION
           eb deploy
