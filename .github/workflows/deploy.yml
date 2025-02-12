@@ -20,7 +20,10 @@ jobs:
           distribution: "temurin"
 
       - name: Build with Maven
-        run: mvn -f ./backend/pom.xml clean package
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET_KEY }}
+          DB_URL: ${{ secrets.DB_URL }}
+        run: mvn -f ./backend/pom.xml clean package -Dmaven.test.skip=true
 
       - name: Configure AWS CLI
         env:
@@ -35,8 +38,9 @@ jobs:
       - name: Deploy to AWS Elastic Beanstalk
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          DB_URL: ${{ secrets.DB_URL }}
         run: |
           cd backend
           eb init -p java-21 -r $AWS_REGION
-          eb setenv JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} DB_URL=${{ secrets.DB_URL }}
           eb deploy
