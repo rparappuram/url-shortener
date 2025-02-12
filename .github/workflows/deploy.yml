@@ -23,11 +23,16 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET_KEY }}
           DB_URL: ${{ secrets.DB_URL }}
-        run: mvn -f ./backend/pom.xml clean package -Dmaven.test.skip=true
-
-      - name: Zip application for deployment
         run: |
           cd backend
+          mvn clean package -Dmaven.test.skip=true
+
+      - name: Prepare Deployment Package
+        run: |
+          mkdir -p deploy
+          cp backend/target/*.jar deploy/application.jar
+          echo "web: java -jar application.jar" > deploy/Procfile
+          cd deploy
           zip -r ../deploy.zip .
 
       - name: Deploy to AWS Elastic Beanstalk
